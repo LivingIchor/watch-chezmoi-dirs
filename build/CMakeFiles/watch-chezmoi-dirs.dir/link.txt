@@ -1,0 +1,1 @@
+/usr/bin/cc -Wl,--dependency-file=CMakeFiles/watch-chezmoi-dirs.dir/link.d "CMakeFiles/watch-chezmoi-dirs.dir/main.c.o" -o watch-chezmoi-dirs
