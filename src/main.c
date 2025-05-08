@@ -1,9 +1,16 @@
-#include <stdio.h>
+#include "log.h"
 
 int
-main(void)
+main(int argc, char *argv[])
 {
-    printf("Hello, World!");
+	log_init(LOG_WARN, true, "./test-log");
 
-    return 0;
+	DLOG("debug");
+	ILOG("info");
+	WLOG("warning");
+	ELOG("error");
+
+	log_deinit();
+
+	return 0;
 }

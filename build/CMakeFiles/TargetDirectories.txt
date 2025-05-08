@@ -1,3 +1,0 @@
-/home/livingichor/projects/watch-chezmoi-dirs/build/CMakeFiles/watch-chezmoi-dirs.dir
-/home/livingichor/projects/watch-chezmoi-dirs/build/CMakeFiles/edit_cache.dir
-/home/livingichor/projects/watch-chezmoi-dirs/build/CMakeFiles/rebuild_cache.dir
