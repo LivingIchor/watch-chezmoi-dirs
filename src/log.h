@@ -1,3 +1,6 @@
+#ifndef _LOG_H
+#define _LOG_H
+
 #include <stdbool.h>
 
 #define MAX_PATH_LEN 4096
@@ -38,3 +41,5 @@ log_msg(
 	log_msg(LOG_WARN, __FILE__, __LINE__, __VA_ARGS__)
 #define ELOG(...) \
 	log_msg(LOG_ERR, __FILE__, __LINE__, __VA_ARGS__)
+
+#endif /* _LOG_H */
