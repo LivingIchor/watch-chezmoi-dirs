@@ -6,7 +6,6 @@
 #include <sys/stat.h>
 
 #include "log.h"
-#include "attr.h"
 
 static enum log_lvl min_log_lvl = LOG_WARN;
 static bool do_file_log = false;
@@ -23,17 +22,16 @@ static const struct {
 };
 
 void
-log_init(enum log_lvl _min_log_lvl, bool _do_file_log, char *_log_path)
+log_init(enum log_lvl _min_log_lvl, bool _do_file_log, const char *_log_path)
 {
-	char log_path[MAX_PATH_LEN + 1] = { 0 };
-
 	if (!(do_file_log = _do_file_log) ||
 		(min_log_lvl = _min_log_lvl) == LOG_NONE)
 		return;
 
+	char log_path[MAX_PATH_LEN + 1] = { 0 };
 	char default_log_path[MAX_PATH_LEN + 1];
 	snprintf(default_log_path, MAX_PATH_LEN + 1,
-		"%s/.local/share/chezmoi/.watch-log", getenv("HOME"));
+		"%s/.watchdata/log", getenv("CHEZMOI_SOURCE_DIR"));
 
 	// TODO: handle str func errors
 	if (_log_path != NULL && _log_path[0] != '\0') {

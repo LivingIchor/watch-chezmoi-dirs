@@ -19,7 +19,7 @@ enum log_lvl {
 };
 
 void
-log_init(enum log_lvl _min_log_lvl, bool _do_file_log, char *_log_path);
+log_init(enum log_lvl _min_log_lvl, bool _do_file_log, const char *_log_path);
 
 void
 log_deinit(void);

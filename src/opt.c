@@ -34,7 +34,7 @@ get_opt(char *argv[], const char opts_str[], const struct long_opt long_opts[])
 			(*curr_symbol)++;
 			break;
 		case 'a' ... 'z':
-			curr_symbol = &short_opts[opts_str[i] - 'a'];
+			curr_symbol = &short_opts[opts_str[i] - 'a' + 26];
 			if (*curr_symbol >= no_argument)
 				PANIC(-1, "Malformed option string");
 
