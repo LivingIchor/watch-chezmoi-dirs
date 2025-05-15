@@ -1,7 +1,11 @@
+# tool config
+.clangd
+
 # Prerequisites
 *.d
 
 # Object files
+obj/
 *.o
 *.ko
 *.obj
@@ -29,6 +33,7 @@
 *.dylib
 
 # Executables
+bin/
 *.exe
 *.out
 *.app

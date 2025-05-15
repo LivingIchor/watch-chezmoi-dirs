@@ -1,15 +1,17 @@
 #include <stdio.h>
 #include <string.h>
+#include <pthread.h>
 
 #include "log.h"
 #include "opt.h"
+#include "watch-management.h"
 
 static void
 print_usage(const char *prog_name)
 {
 	static const char options[] =
 	"\nOptions:\n"
-	"  -l,--log-level={debug|info|warn|error|none}	sets the min level logged\n"
+	"  -l,--log-level={info|warn|error|none}	sets the min level logged\n"
 	"  -L,--log-file=PATH				enables file logging and sets log path\n"
 	"  -h,--help					print this help screen\n";
 
@@ -102,16 +104,11 @@ main(int argc, char *argv[])
 		}
 	}
 
-	printf("min_log_lvl: %d\n", min_log_lvl);
-	printf("do_file_log: %s\n", do_file_log ? "true" : "false");
-	printf("log_path: %s\n", log_path);
-	printf("list_path: %s\n", list_path);
 	log_init(min_log_lvl, do_file_log, log_path);
 
-	DLOG("This is a debug log");
-	ILOG("This is a info log");
-	WLOG("This is a warning log");
-	ELOG("This is a error log");
+	pthread_t watcher;
+	pthread_create(&watcher, NULL, manage_watches, NULL);
+	pthread_join(watcher, NULL);
 
 	log_deinit();
 

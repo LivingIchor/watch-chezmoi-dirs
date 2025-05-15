@@ -3,7 +3,7 @@ target = watch-chezmoi-dirs
 CC = gcc
 CFLAGS = -g -Wall -Wextra
 
-blddir = bld
+bindir = bin
 objdir = obj
 srcdir = src
 
@@ -13,11 +13,11 @@ objs := $(patsubst $(srcdir)/%.c,$(objdir)/%.o,$(srcs))
 .PHONY: all
 all: $(target)
 
-$(target): $(objs) | $(blddir)
-	$(CC) $(CFLAGS) -o $(blddir)/$@ $^
+$(target): $(objs) | $(bindir)
+	$(CC) $(CFLAGS) -o $(bindir)/$@ $^
 
-$(blddir):
-	mkdir -p $(blddir)
+$(bindir):
+	mkdir -p $(bindir)
 
 $(objdir)/%.o: $(srcdir)/%.c | $(objdir)
 	$(CC) $(CFLAGS) -c -o $@ $^
@@ -27,4 +27,4 @@ $(objdir):
 
 .PHONY: clean
 clean:
-	rm -rf $(objdir) $(blddir)
+	rm -rf $(objdir) $(bindir)
