@@ -1,10 +1,21 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <pthread.h>
+#include <semaphore.h>
+#include <sys/stat.h>
+#include <sys/inotify.h>
+#include <linux/limits.h>
 
 #include "log.h"
 #include "opt.h"
-#include "watch-management.h"
+#include "file.h"
+#include "wd-paths.h"
+#include "event-management.h"
+
+#define MAX_THREADS 16
+#define MAX_IN_EVENT (sizeof(struct inotify_event) + NAME_MAX + 1)
 
 static void
 print_usage(const char *prog_name)
@@ -22,9 +33,11 @@ print_usage(const char *prog_name)
 int
 main(int argc, char *argv[])
 {
+	sem_init(&threads_sem, 0, MAX_THREADS);
+
 	char list_path[MAX_PATH_LEN + 1] = { 0 };
 	snprintf(list_path, MAX_PATH_LEN + 1,
-		"%s/.watchdata/watches", ("CHEZMOI_SOURCE_DIR"));
+		"%s/.watchdata/watches", getenv("CHEZMOI_SOURCE_DIR"));
 
 	enum log_lvl min_log_lvl = LOG_WARN;
 	bool do_file_log = false;
@@ -106,11 +119,22 @@ main(int argc, char *argv[])
 
 	log_init(min_log_lvl, do_file_log, log_path);
 
-	pthread_t watcher;
-	pthread_create(&watcher, NULL, manage_watches, NULL);
-	pthread_join(watcher, NULL);
+	int infd = inotify_init();
+	paths_t paths = file_load(infd, list_path);
+	if (paths == NULL)
+		return 1;
+
+	uint8_t raw_eventbuf[MAX_IN_EVENT];
+	struct inotify_event *eventbuf = (struct inotify_event *)raw_eventbuf;
+	size_t bytes_read;
+	pthread_rwlock_wrlock(&eventbuf_lock);
+	while ((bytes_read = read(infd, eventbuf, MAX_IN_EVENT)) != -1) {
+
+	}
+
+	ELOG("Error while reading inotify event");
 
 	log_deinit();
 
-	return 0;
+	return -1;
 }
