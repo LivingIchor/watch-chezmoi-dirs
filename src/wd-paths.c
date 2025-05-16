@@ -1,4 +1,3 @@
-#include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +7,7 @@
 
 struct _tree_node {
 	char *path;
+	bool is_dir;
 	int wd;
 	int net_balance;
 	struct _tree_node *left;
@@ -212,10 +212,10 @@ _add_to_node(struct _tree_node **node_ptr, struct _tree_node *new)
 }
 
 void
-paths_add(paths_t start, int wd, char *path)
+paths_add(paths_t start, int wd, char *path, bool is_dir)
 {
 	struct _tree_node *new = malloc(sizeof(struct _tree_node));
-	*new = (struct _tree_node){ path, wd, 0, NULL, NULL };
+	*new = (struct _tree_node){ path, is_dir, wd, 0, NULL, NULL };
 
 	if (start->size == 0)
 		start->root = new;
@@ -255,33 +255,6 @@ paths_retrieve(paths_t start, int wd)
 		return NULL;
 
 	return (*found)->path;
-}
-
-void
-_create_list(struct _tree_node *node, struct list_elm *list, size_t *ind_ptr)
-{
-	if (node == NULL)
-		return;
-
-	_create_list(node->left, list, ind_ptr);
-
-	list[*ind_ptr].wd = node->wd;
-	list[*ind_ptr].path = node->path;
-	(*ind_ptr)++;
-
-	_create_list(node->right, list, ind_ptr);
-}
-
-paths_list_t
-paths_list(paths_t start) {
-	struct list_elm *list = malloc(sizeof(struct list_elm) * start->size);
-	if (list == NULL)
-		PANIC(errno, "Failed to malloc a new list");
-
-	size_t listind = 0;
-	_create_list(start->root, list, &listind);
-
-	return list;
 }
 
 void

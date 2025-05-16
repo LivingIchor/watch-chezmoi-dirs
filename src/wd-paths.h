@@ -1,6 +1,8 @@
 #ifndef _WD_TREE_H
 #define _WD_TREE_H
 
+#include <stdbool.h>
+
 typedef struct paths *paths_t;
 
 paths_t
@@ -10,7 +12,7 @@ void
 paths_destroy(paths_t start);
 
 void
-paths_add(paths_t start, int wd, char *path);
+paths_add(paths_t start, int wd, char *path, bool is_dir);
 
 void
 paths_remove(paths_t start, int wd);

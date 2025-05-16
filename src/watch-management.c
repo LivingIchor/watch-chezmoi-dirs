@@ -1,9 +1,9 @@
 #include <stdlib.h>
 
-#include "watch-management.h"
+#include "event-management.h"
 
 void *
-manage_watches(void *arg)
+manage_events(void *arg)
 {
 	return NULL;
 }

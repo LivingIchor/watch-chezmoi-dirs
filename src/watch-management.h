@@ -1,10 +1,11 @@
 #ifndef _WATCH_MANAGEMENT_H
 #define _WATCH_MANAGEMENT_H
 
-struct event_buf_elm {
-};
+#include "wd-paths.h"
 
-struct action_buf_elm {
+struct watch_info {
+	int infd;
+	paths_t wd_paths;
 };
 
 void *
